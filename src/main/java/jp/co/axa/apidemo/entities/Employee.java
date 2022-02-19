@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name="EMPLOYEE")
@@ -29,7 +30,7 @@ public class Employee implements Serializable {
     @Getter
     @Setter
     @Column(name="EMPLOYEE_SALARY")
-    private Integer salary;
+    private BigDecimal salary;
 
     @Getter
     @Setter

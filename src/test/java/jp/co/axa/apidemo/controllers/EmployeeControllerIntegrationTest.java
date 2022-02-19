@@ -18,6 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +46,7 @@ public class EmployeeControllerIntegrationTest {
     @Before
     public void before() throws Exception {
 
-        EmployeeModel employeeModel1 = new EmployeeModel(null, "samir jha", 23356, "geography");
+        EmployeeModel employeeModel1 = new EmployeeModel(null, "samir jha", new BigDecimal(23356), "geography");
         mockMvc.perform(post("/api/v1/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
@@ -56,7 +58,7 @@ public class EmployeeControllerIntegrationTest {
     @WithMockUser(username="spring")
     public void testSaveEmployee() throws Exception {
 
-        EmployeeModel employeeModel = new EmployeeModel(null, "samir kumar", 23358, "physics");
+        EmployeeModel employeeModel = new EmployeeModel(null, "samir kumar", new BigDecimal(23358), "physics");
         mockMvc.perform(post("/api/v1/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
@@ -69,7 +71,7 @@ public class EmployeeControllerIntegrationTest {
     @WithMockUser(username="spring")
     public void testUpdateEmployee() throws Exception {
 
-        EmployeeModel employeeModel = new EmployeeModel(null, "ddd", 23359, "geography");
+        EmployeeModel employeeModel = new EmployeeModel(null, "ddd", new BigDecimal(23359), "geography");
 
         mockMvc.perform(put("/api/v1/employees/2")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +85,7 @@ public class EmployeeControllerIntegrationTest {
     @WithMockUser(username="spring")
     public void testUpdateNotExistingEmployee() throws Exception {
 
-        EmployeeModel employeeModel = new EmployeeModel(null, "ddd", 23359, "geography");
+        EmployeeModel employeeModel = new EmployeeModel(null, "ddd", new BigDecimal(23359), "geography");
 
         mockMvc.perform(put("/api/v1/employees/100")
                         .contentType(MediaType.APPLICATION_JSON)

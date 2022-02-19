@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,7 +47,7 @@ public class EmployeeController {
      * @param employeeModel
      */
     @PostMapping("/employees")
-    public ResponseEntity<EmployeeModel> saveEmployee(EmployeeModel employeeModel) {
+    public ResponseEntity<EmployeeModel> saveEmployee(@Valid @RequestBody EmployeeModel employeeModel) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(employeeService.saveEmployee(employeeModel));
     }
@@ -67,7 +68,7 @@ public class EmployeeController {
      * @param employeeId
      */
     @PutMapping("/employees/{employeeId}")
-    public ResponseEntity<EmployeeModel> updateEmployee(@RequestBody EmployeeModel employeeModel,
+    public ResponseEntity<EmployeeModel> updateEmployee(@Valid @RequestBody EmployeeModel employeeModel,
                                @PathVariable(name="employeeId")Long employeeId) {
         EmployeeModel emp = employeeService.getEmployee(employeeId);
         if(emp != null){
