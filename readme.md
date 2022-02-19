@@ -35,5 +35,7 @@ Swagger UI : http://localhost:8080/swagger-ui.html
 ### Remaining work for improvement:
 1. Spring security improvement
 2. Redis key and config (cluster) improvement
+3. Mysql master slave configuration
+4. Logging and monitoring
 ### My experience in Java:
 - I have 8.5 years of experience in Java (from version 7 to 11 now) and I started to use Spring Boot from last 4 years.
