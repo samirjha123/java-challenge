@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: samirjha123/api:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: api-key
+                  key: database-name
+            - name: MYSQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-password
+            - name: API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: api-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  labels:
+    app: redis-service
+spec:
+  ports:
+    - port: 6379  #Exposed port number
+      protocol: TCP
+      targetPort: 6379  #Service port number
+  selector:
+    name: redis  #Selected Pod Tags
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  labels:
+    app: mysql-service
+spec:
+  ports:
+    - port: 3306
+      protocol: TCP
+  selector:
+    app: api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  labels:
+    app: api-service
+    spring-boot: "true"
+spec:
+  ports:
+    - name: http-api
+      port: 8080
+      protocol: TCP
+  selector:
+    app: api
+  sessionAffinity: None
+  type: ClusterIP

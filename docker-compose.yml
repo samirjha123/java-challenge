@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  api_service:
+    environment:
+      MYSQL_USERNAME: 'mysqluser'
+      MYSQL_PASSWORD: 'mysqlpassword'
+      MYSQL_DATABASE: 'api'
+      MYSQL_ENDPOINT: 'mysql_db:3306'
+      REDIS_ENDPOINT: 'redis'
+      API_PASSWORD: "password"
+    build: .
+    restart: always
+    depends_on:
+      - mysql_db
+      - redis
+    ports:
+      - "8080:8080"
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  mysql_db:
+    image: "mysql:8.0"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: api
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
