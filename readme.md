@@ -31,8 +31,8 @@
 
 ### How to use this spring-boot project
 Swagger UI : http://localhost:8080/swagger-ui.html
-username: admin
-password: password
+* username: admin
+* password: password
 
 Sample Request: http://localhost:8080/api/v1/employees
 ```
