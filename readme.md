@@ -1,52 +1,55 @@
-### How to use this spring-boot project
-
-- Install packages with `mvn package`
-- Run `mvn spring-boot:run` for starting the application (or use your IDE)
-
-Application (with the embedded H2 database) is ready to be used ! You can access the url below for testing it :
-
-- Swagger UI : http://localhost:8080/swagger-ui.html
-- H2 UI : http://localhost:8080/h2-console
-
-> Don't forget to set the `JDBC URL` value as `jdbc:h2:mem:testdb` for H2 UI.
-
-
-
-### Instructions
-
-- download the zip file of this project
-- create a repository in your own github named 'java-challenge'
-- clone your repository in a folder on your machine
-- extract the zip file in this folder
-- commit and push
-
-- Enhance the code in any ways you can see, you are free! Some possibilities:
-  - Add tests
-  - Change syntax
-  - Protect controller end points
-  - Add caching logic for database calls
-  - Improve doc and comments
-  - Fix any bug you might find
-- Edit readme.md and add any comments. It can be about what you did, what you would have done if you had more time, etc.
-- Send us the link of your repository.
-
-#### Restrictions
+# Pre-requisite
 - use java 8
+# Local deployment using docker-compose:
+* Change mongo db url in application.yml
+* Close previous running container: -> docker-compose down
+* Build jar file: -> mvn clean install
+* Build and execute docker image: ->  docker-compose up --build -d
+# Deployment using k8s:
+## Requirements:
+### Set up
+* Download and install `Docker Desktop`
+* Download and run `Minikube` using command: minikube start --vm-driver=docker --memory='4000mb'
 
+## Deployment Process:
+### Build docker image
+* docker build --tag api:0.0.1-SNAPSHOT .
+### Tag Image
+* docker tag api:0.0.1-SNAPSHOT ${docker-id}/api:0.0.1-SNAPSHOT
+### Push image to docker hub
+* docker push ${docker-id}/api:0.0.1-SNAPSHOT
+### Deploy application in DEV profile
+* kubectl apply -k k8s-manifest/overlays/dev
+### Verify pod and service status
+* kubectl get all
+### forward 8080 port for local access
+* kubectl port-forward svc/api-service 8080:8080
 
-#### What we will look for
-- Readability of your code
-- Documentation
-- Comments in your code 
-- Appropriate usage of spring boot
-- Appropriate usage of packages
-- Is the application running as expected
-- No performance issues
+### Application log:
+* kubectl exec -it api-cb445759-s527w --container api -- /bin/sh
+* cat /var/log/api/Application/Application.log
 
-#### Your experience in Java
+### How to use this spring-boot project
+Swagger UI : http://localhost:8080/swagger-ui.html
+* username: admin
+* password: password
 
-Please let us know more about your Java experience in a few sentences. For example:
-
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years
+Sample Request: http://localhost:8080/api/v1/employees
+```
+curl --location --request POST 'http://localhost:8080/api/v1/employees' \
+--header 'Authorization: Basic YWRtaW46cGFzc3dvcmQ=' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=C4A34AD4BBF0DB13BA552C4CEA49B556' \
+--data-raw '{
+"department": "string",
+"name": "string",
+"salary": 0
+}'
+```
+### Remaining work for improvement:
+1. Spring security improvement
+2. Redis key and config (cluster) improvement
+3. Mysql master slave configuration
+4. Logging and monitoring
+### My experience in Java:
+- I have 8.5 years of experience in Java (from version 7 to 11 now) and I started to use Spring Boot from last 4 years.

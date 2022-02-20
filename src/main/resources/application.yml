@@ -1,0 +1,30 @@
+spring:
+  security:
+    user:
+      name: admin
+      password: ${API_PASSWORD}
+  application:
+    name: api
+  redis:
+    host: ${REDIS_ENDPOINT}
+    port: 6379
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_ENDPOINT}/${MYSQL_DATABASE}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  output.ansi.enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: update
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

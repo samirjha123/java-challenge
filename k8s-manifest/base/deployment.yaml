@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: samirjha123/api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: LOG_PATH
+              value: var/log/api
+            - name: MYSQL_ENDPOINT
+              value: localhost
+            - name: REDIS_ENDPOINT
+              value: localhost
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: api-key
+                  key: database-name
+            - name: MYSQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-password
+            - name: API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: api-password
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: api-key
+                  key: database-name
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: database-root-password
+        - name: redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379

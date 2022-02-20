@@ -1,6 +1,8 @@
 package jp.co.axa.apidemo.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -9,10 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name="EMPLOYEE")
-public class Employee {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Employee implements Serializable {
 
     @Getter
     @Setter
@@ -28,7 +34,7 @@ public class Employee {
     @Getter
     @Setter
     @Column(name="EMPLOYEE_SALARY")
-    private Integer salary;
+    private BigDecimal salary;
 
     @Getter
     @Setter
