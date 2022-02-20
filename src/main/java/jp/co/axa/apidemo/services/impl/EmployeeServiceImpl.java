@@ -41,14 +41,19 @@ public class EmployeeServiceImpl implements EmployeeService<EmployeeModel> {
      * @return
      */
     public EmployeeModel getEmployee(Long employeeId) {
+        EmployeeModel result = null;
         //get from cache
-        EmployeeModel result = (EmployeeModel) redisTemplate.opsForValue().get(employeeId);
+        if(redisTemplate.opsForValue() != null) {
+            result = (EmployeeModel) redisTemplate.opsForValue().get(employeeId);
+        }
         if (result == null) {
             Optional<Employee> optEmp = employeeRepository.findById(employeeId);
             if (optEmp.isPresent()) {
                 result = ObjectMapper.OBJECT_MAPPER.entityToModel(optEmp.get());
                 //store into cache
-                redisTemplate.opsForValue().set(result.getId(), result, 1, TimeUnit.MINUTES);
+                if(redisTemplate.opsForValue() != null) {
+                    redisTemplate.opsForValue().set(result.getId(), result, 1, TimeUnit.MINUTES);
+                }
             }
         }
         return result;
@@ -62,7 +67,9 @@ public class EmployeeServiceImpl implements EmployeeService<EmployeeModel> {
         Employee employee = ObjectMapper.OBJECT_MAPPER.modelToEntity(employeeModel);
         EmployeeModel result = ObjectMapper.OBJECT_MAPPER.entityToModel(employeeRepository.save(employee));
         //store into cache
-        redisTemplate.opsForValue().set(result.getId(), result, 1, TimeUnit.MINUTES);
+        if(redisTemplate.opsForValue() != null) {
+            redisTemplate.opsForValue().set(result.getId(), result, 1, TimeUnit.MINUTES);
+        }
         return result;
     }
 
@@ -84,7 +91,9 @@ public class EmployeeServiceImpl implements EmployeeService<EmployeeModel> {
         Employee employee = ObjectMapper.OBJECT_MAPPER.modelToEntity(employeeModel);
         EmployeeModel result = ObjectMapper.OBJECT_MAPPER.entityToModel(employeeRepository.save(employee));
         //store into cache
-        redisTemplate.opsForValue().set(result.getId(), result, 1, TimeUnit.MINUTES);
+        if(redisTemplate.opsForValue() != null) {
+            redisTemplate.opsForValue().set(result.getId(), result, 1, TimeUnit.MINUTES);
+        }
         return result;
     }
 }
