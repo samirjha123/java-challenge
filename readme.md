@@ -31,7 +31,21 @@
 
 ### How to use this spring-boot project
 Swagger UI : http://localhost:8080/swagger-ui.html
+username: admin
+password: password
 
+Sample Request: http://localhost:8080/api/v1/employees
+```
+curl --location --request POST 'http://localhost:8080/api/v1/employees' \
+--header 'Authorization: Basic YWRtaW46cGFzc3dvcmQ=' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=C4A34AD4BBF0DB13BA552C4CEA49B556' \
+--data-raw '{
+"department": "string",
+"name": "string",
+"salary": 0
+}'
+```
 ### Remaining work for improvement:
 1. Spring security improvement
 2. Redis key and config (cluster) improvement
